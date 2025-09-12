@@ -3,8 +3,9 @@ import { AuthProvider } from './contexts/AuthContext'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
-import DashboardPage from './pages/DashboardPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import DashboardHome from './pages/DashboardHome'
+import HotelsPage from './pages/HotelsPage'
 
 function App() {
   return (
@@ -14,13 +15,21 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-          <Route 
-            path="/dashboard" 
+          <Route
+            path="/dashboard"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <DashboardHome />
               </ProtectedRoute>
-            } 
+            }
+          />
+          <Route
+            path="/hotels"
+            element={
+              <ProtectedRoute>
+                <HotelsPage />
+              </ProtectedRoute>
+            }
           />
           <Route path="/" element={<LoginPage />} />
         </Routes>

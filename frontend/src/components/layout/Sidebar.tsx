@@ -1,26 +1,18 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { Flag, LayoutDashboard, Building2, User } from 'lucide-react';
 
-type CurrentPage = 'dashboard' | 'hotels';
-
-interface SidebarProps {
-  currentPage?: CurrentPage;
-  onPageChange?: (page: CurrentPage) => void;
-}
-
-const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'dashboard', onPageChange }) => {
+const Sidebar: React.FC = () => {
   const menuItems = [
     {
-      id: 'dashboard' as CurrentPage,
+      to: '/dashboard',
       label: 'Dashboard',
       icon: LayoutDashboard,
-      isActive: currentPage === 'dashboard'
     },
     {
-      id: 'hotels' as CurrentPage,
+      to: '/hotels',
       label: "Liste des hôtels",
       icon: Building2,
-      isActive: currentPage === 'hotels'
     }
   ];
 
@@ -42,18 +34,16 @@ const Sidebar: React.FC<SidebarProps> = ({ currentPage = 'dashboard', onPageChan
             {menuItems.map((item) => {
               const Icon = item.icon;
               return (
-                <button
-                  key={item.id}
-                  onClick={() => onPageChange?.(item.id)}
-                  className={`w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
-                    item.isActive
-                      ? 'bg-gray-800 text-white'
-                      : 'text-gray-300 hover:bg-gray-600 hover:text-white'
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  className={({ isActive }) => `w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors duration-200 ${
+                    isActive ? 'bg-gray-800 text-white' : 'text-gray-300 hover:bg-gray-600 hover:text-white'
                   }`}
                 >
                   <Icon className="w-5 h-5 mr-3" />
                   {item.label}
-                </button>
+                </NavLink>
               );
             })}
           </nav>
