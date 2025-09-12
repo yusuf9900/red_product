@@ -13,11 +13,18 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel, onEdit, onDelete }) => {
   return (
     <div className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group">
       {hotel.photo_url && (
-        <div className="aspect-video overflow-hidden">
+        <div className="aspect-video overflow-hidden bg-gray-100">
           <img
-            src={hotel.photo_url}
+            src={hotel.photo_url.startsWith('http') ? hotel.photo_url : `http://localhost:8000/storage/${hotel.photo_url}`}
             alt={hotel.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+            onError={(e) => {
+              // En cas d'erreur de chargement, on cache l'image
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              target.parentElement!.style.paddingBottom = '0';
+              target.parentElement!.style.height = '0';
+            }}
           />
         </div>
       )}

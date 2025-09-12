@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Flag, LayoutDashboard, Building2, User } from 'lucide-react';
+import { LayoutDashboard, Building2, User } from 'lucide-react';
 
 const Sidebar: React.FC = () => {
   const menuItems = [
@@ -17,11 +17,11 @@ const Sidebar: React.FC = () => {
   ];
 
   return (
-    <div className="w-64 bg-gray-700 text-white h-screen flex flex-col">
+    <div className="w-80 bg-gray-700 text-white h-screen flex flex-col">
       {/* Logo */}
       <div className="p-6 border-b border-gray-600">
         <div className="flex items-center space-x-3">
-          <Flag className="w-6 h-6" />
+          <img src="/logo-red-product.png" alt="Logo" className="w-auto h-7" />
           <span className="font-bold text-lg">RED PRODUCT</span>
         </div>
       </div>

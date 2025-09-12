@@ -21,16 +21,18 @@ const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon = 'Mai
   const IconComponent = iconComponents[icon] || Mail;
   return (
     <div className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
-      <div className="flex items-center justify-between">
-        <div className="flex-1">
-          <h3 className="text-2xl font-bold text-gray-800 mb-1">
-            {typeof value === 'number' ? value.toLocaleString() : value}{' '}
-            <span className="text-sm font-medium text-gray-600 ml-2">{title}</span>
-          </h3>
-          {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
+      <div className="flex items-start space-x-8">
+        <div className={`w-12 h-12 rounded-full ${bgColor} flex-shrink-0 flex items-center justify-center`}>
+          <IconComponent className={`w-10 h-10 ${color}`} />
         </div>
-        <div className={`w-12 h-12 rounded-full ${bgColor} flex items-center justify-center`}>
-          <IconComponent className={`w-6 h-6 ${color}`} />
+        <div className="flex-1">
+          <div className="flex items-baseline space-x-3">
+            <span className="text-3xl font-bold text-gray-800">
+              {typeof value === 'number' ? value.toLocaleString() : value}
+            </span>
+            <span className="text-base font-medium text-gray-600">{title}</span>
+          </div>
+          {subtitle && <p className="text-sm text-gray-500 mt-2">{subtitle}</p>}
         </div>
       </div>
     </div>
