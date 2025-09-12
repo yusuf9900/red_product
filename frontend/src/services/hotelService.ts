@@ -5,9 +5,10 @@ const API_BASE_URL = 'http://localhost:8000/api'
 
 export const hotelService = {
   // Récupérer tous les hôtels
-  getHotels: async (): Promise<ApiResponse<Hotel[]>> => {
+  getHotels: async (): Promise<Hotel[]> => {
     const response = await axios.get(`${API_BASE_URL}/hotels`)
-    return response.data
+    // Le backend renvoie un tableau brut d'hôtels
+    return response.data as Hotel[]
   },
 
   // Récupérer un hôtel par ID
