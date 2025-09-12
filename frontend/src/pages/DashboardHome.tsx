@@ -23,10 +23,6 @@ export default function DashboardHome() {
     })();
   }, []);
 
-  const averagePrice = hotels.length > 0
-    ? Math.round(hotels.reduce((sum, h) => sum + Number(h.price_per_night), 0) / hotels.length)
-    : 0;
-
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <Sidebar />

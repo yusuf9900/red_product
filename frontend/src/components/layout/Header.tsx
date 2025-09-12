@@ -37,7 +37,7 @@ export const Header: React.FC<HeaderProps> = ({ title, userName, onLogout }) => 
             <div className="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center">
               <User className="w-4 h-4 text-white" />
             </div>
-           {/* {userName && <span className="text-sm text-gray-700">{userName}</span>}*/}
+            {userName && <span className="text-sm text-gray-700">{userName}</span>}
             {onLogout && (
               <button onClick={onLogout} className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800">
                 <LogOut className="w-4 h-4 mr-1" />
