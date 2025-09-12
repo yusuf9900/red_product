@@ -26,6 +26,13 @@ class Hotel extends Model
     ];
 
     /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['photo_url'];
+
+    /**
      * The attributes that should be cast.
      *
      * @return array<string, string>
@@ -35,5 +42,15 @@ class Hotel extends Model
         return [
             'price_per_night' => 'decimal:2',
         ];
+    }
+
+    /**
+     * Get the URL for the hotel photo.
+     *
+     * @return string|null
+     */
+    public function getPhotoUrlAttribute()
+    {
+        return $this->photo ? asset('storage/' . $this->photo) : null;
     }
 }
