@@ -7,7 +7,7 @@ interface HeaderProps {
   onLogout?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ title, userName, onLogout }) => {
+export const Header: React.FC<HeaderProps> = ({ title, onLogout }) => {
   return (
     <div className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
       <div className="flex items-center justify-between">
@@ -37,7 +37,6 @@ export const Header: React.FC<HeaderProps> = ({ title, userName, onLogout }) => 
             <div className="w-8 h-8 rounded-full bg-gray-500 flex items-center justify-center">
               <User className="w-4 h-4 text-white" />
             </div>
-            {userName && <span className="text-sm text-gray-700">{userName}</span>}
             {onLogout && (
               <button onClick={onLogout} className="inline-flex items-center text-sm text-gray-600 hover:text-gray-800">
                 <LogOut className="w-4 h-4 mr-1" />

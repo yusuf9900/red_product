@@ -24,7 +24,7 @@ export default function DashboardHome() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-gray-200 flex">
       <Sidebar />
       <div className="flex-1 flex flex-col min-h-screen">
         <Header title="Dashboard" userName={user?.name} onLogout={logout} />
