@@ -50,21 +50,7 @@ export default function DashboardPage() {
     setShowForm(true)
   }
 
-  const handleDeleteHotel = async (hotelId: number) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cet hôtel ?')) {
-      return
-    }
-
-    try {
-      await hotelService.deleteHotel(hotelId)
-      await loadHotels()
-    } catch (error) {
-      console.error('Erreur lors de la suppression:', error)
-      alert('Erreur lors de la suppression de l\'hôtel')
-    }
-  }
-
-  const handleFormSubmit = async (formData: HotelFormData) => {
+const handleFormSubmit = async (formData: HotelFormData) => {
     try {
       setFormLoading(true)
       if (editingHotel) {
@@ -145,7 +131,11 @@ export default function DashboardPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {hotels.map((hotel) => (
-                <HotelCard key={hotel.id} hotel={hotel} onEdit={handleEditHotel} onDelete={handleDeleteHotel} />
+                <HotelCard 
+                  key={hotel.id} 
+                  hotel={hotel} 
+                  onClick={handleEditHotel}
+                />
               ))}
             </div>
           )}
