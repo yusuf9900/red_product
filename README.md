@@ -1,120 +1,154 @@
-# Application Laravel + React.js
+# 🏨 RED PRODUCT - Gestion Hôtelière
 
-Une application moderne avec Laravel comme API backend et React.js comme frontend.
+Application web complète de gestion hôtelière développée avec Laravel (backend) et React.js (frontend).
 
-## Structure du projet
+## 🚀 Fonctionnalités Principales
+
+- **Gestion des Hôtels**
+  - Création, lecture, mise à jour et suppression d'hôtels
+  - Téléchargement et affichage des photos d'hôtels
+  - Gestion des prix et devises
+  - Recherche et filtrage des hôtels
+
+- **Tableau de Bord**
+  - Vue d'ensemble des statistiques
+  - Interface utilisateur moderne et réactive
+  - Navigation intuitive avec barre latérale
+
+- **Sécurité**
+  - Authentification utilisateur sécurisée avec Laravel Sanctum
+  - Protection des routes API
+  - Gestion des sessions
+
+## 🛠️ Structure du Projet
 
 ```
-├── backend/          # API Laravel
-├── frontend/         # Application React.js
-└── package.json      # Scripts de gestion globale
+project/
+├── backend/               # API Laravel
+│   ├── app/               # Modèles et contrôleurs
+│   ├── config/            # Fichiers de configuration
+│   ├── database/          # Migrations et seeders
+│   └── routes/            # Définition des routes API
+│
+├── frontend/              # Application React.js
+│   ├── public/            # Fichiers statiques
+│   └── src/               # Code source React
+│       ├── components/    # Composants réutilisables
+│       ├── contexts/      # Contextes React
+│       └── services/      # Services API
+│
+└── package.json           # Scripts de gestion globale
 ```
 
-## Installation
+## 🚀 Installation
 
 ### Prérequis
+
 - PHP 8.1+
-- Composer
+- Composer 2.0+
 - Node.js 18+
-- npm
+- npm 9+
+- SQLite (ou autre SGBD supporté par Laravel)
 
-### Installation complète
+### Installation Complète
 
+1. **Cloner le dépôt**
 ```bash
-# Installer toutes les dépendances
+git clone [URL_DU_DEPOT]
+cd red-product/project
+```
+
+2. **Installer les dépendances**
+```bash
+# Installer toutes les dépendances en une commande
 npm run install:all
 
 # Ou installer séparément
-npm run install:backend  # Installe les dépendances Laravel
-npm run install:frontend # Installe les dépendances React
+npm run install:backend   # Dépendances Laravel
+npm run install:frontend  # Dépendances React
 ```
 
-### Configuration Laravel
+3. **Configuration du Backend**
 
-1. Copier le fichier d'environnement :
 ```bash
 cd backend
+
+# Copier le fichier d'environnement
 cp .env.example .env
-```
 
-2. Générer la clé d'application :
-```bash
+# Générer la clé d'application
 php artisan key:generate
-```
 
-3. Créer la base de données SQLite :
-```bash
+# Configurer la base de données dans .env
+# Exemple pour SQLite :
+DB_CONNECTION=sqlite
+DB_DATABASE=/chemin/vers/la/base/de/donnees.sqlite
+
+# Créer la base de données SQLite
+# (si vous utilisez SQLite)
 touch database/database.sqlite
+
+# Exécuter les migrations et les seeders
+php artisan migrate --seed
 ```
 
-4. Exécuter les migrations :
+4. **Configuration du Frontend**
+
 ```bash
-php artisan migrate
+cd ../frontend
+
+# Créer le fichier .env à partir de .env.example
+cp .env.example .env
+
+# Modifier les variables d'environnement si nécessaire
+# VITE_API_URL doit pointer vers votre API Laravel
 ```
 
-## Développement
+## 🚦 Démarrage du Projet
 
-### Démarrer les deux serveurs simultanément
+1. **Démarrer le serveur Laravel**
 ```bash
+cd backend
+php artisan serve
+```
+
+2. **Démarrer l'application React**
+```bash
+cd frontend
 npm run dev
 ```
 
-### Ou démarrer séparément
+L'application sera disponible à l'adresse : [http://localhost:5173](http://localhost:5173)
 
-Backend Laravel (port 8000) :
-```bash
-npm run dev:backend
-```
+## 🔧 Technologies Utilisées
 
-Frontend React (port 5173) :
-```bash
-npm run dev:frontend
-```
+- **Backend**
+  - Laravel 10.x
+  - Laravel Sanctum (Authentification API)
+  - Eloquent ORM
+  - Validation des données
+  - Gestion des fichiers
 
-## Fonctionnalités
+- **Frontend**
+  - React 18
+  - React Router v6
+  - Axios pour les requêtes API
+  - Tailwind CSS pour le style
+  - Lucide Icons
+  - Context API pour la gestion d'état
 
-### Backend Laravel
-- API REST avec authentification Sanctum
-- Routes protégées
-- Gestion des utilisateurs
-- Configuration CORS pour React
+- **Base de Données**
+  - SQLite (par défaut)
+  - Support pour MySQL/PostgreSQL
 
-### Frontend React
-- Interface moderne avec Tailwind CSS
-- Authentification complète (login/register)
-- Routes protégées
-- Gestion d'état avec Context API
-- Design responsive
+## 📝 Licence
 
-## API Endpoints
+Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
 
-- `POST /api/login` - Connexion
-- `POST /api/register` - Inscription
-- `GET /api/user` - Profil utilisateur (protégé)
-- `POST /api/logout` - Déconnexion (protégé)
-- `GET /api/test` - Test de l'API
+## 👥 Contribution
 
-## Accès à l'application
+Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou une pull request.
 
-- Frontend React : http://localhost:5173
-- Backend Laravel : http://localhost:8000
-- API : http://localhost:8000/api
+## 📞 Contact
 
-## Compte de test
-
-Vous pouvez créer un compte via la page d'inscription ou utiliser l'API directement.
-
-## Technologies utilisées
-
-### Backend
-- Laravel 10
-- Laravel Sanctum (authentification)
-- SQLite (base de données)
-
-### Frontend  
-- React 18
-- TypeScript
-- Tailwind CSS
-- React Router
-- Axios
-- Lucide React (icônes)
+Pour toute question ou suggestion, veuillez contacter l'équipe de développement.

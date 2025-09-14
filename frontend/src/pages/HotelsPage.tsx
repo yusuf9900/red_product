@@ -26,6 +26,7 @@ export default function HotelsPage() {
     try {
       setLoading(true);
       const data = await hotelService.getHotels();
+      console.log('Données des hôtels chargées:', data);
       setHotels(data || []);
     } catch (e) {
       console.error('Erreur lors du chargement des hôtels:', e);
@@ -43,17 +44,6 @@ export default function HotelsPage() {
   const handleEditHotel = (hotel: Hotel) => {
     setEditingHotel(hotel);
     setShowForm(true);
-  };
-
-  const handleDeleteHotel = async (hotelId: number) => {
-    if (!window.confirm('Êtes-vous sûr de vouloir supprimer cet hôtel ?')) return;
-    try {
-      await hotelService.deleteHotel(hotelId);
-      await loadHotels();
-    } catch (e) {
-      console.error('Erreur lors de la suppression:', e);
-      alert("Erreur lors de la suppression de l'hôtel");
-    }
   };
 
   const handleFormSubmit = async (formData: HotelFormData) => {
@@ -86,8 +76,8 @@ export default function HotelsPage() {
       <div className="flex-1 flex flex-col min-h-screen">
         <Header title="Liste des hôtels" userName={user?.name} onLogout={logout} />
 
-        <main className="px-6 py-6">
-          <div className="flex items-center justify-between mb-8">
+        <main className="flex flex-col">
+          <div className="flex items-center justify-between p-6 bg-white shadow-sm w-full">
             <div className="flex items-center space-x-3">
               <h2 className="text-3xl font-bold text-gray-800">Hôtels</h2>
               <span className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">{hotels.length}</span>
@@ -98,8 +88,9 @@ export default function HotelsPage() {
               <span>Créer un nouveau hôtel</span>
             </Button>
           </div>
-
-          {loading ? (
+          
+          <div className="flex-1 px-6 py-6">
+            {loading ? (
             <div className="text-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
               <p className="mt-2 text-gray-600">Chargement...</p>
@@ -117,10 +108,15 @@ export default function HotelsPage() {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {hotels.map(hotel => (
-                <HotelCard key={hotel.id} hotel={hotel} onEdit={handleEditHotel} onDelete={handleDeleteHotel} />
+                <HotelCard 
+                  key={hotel.id} 
+                  hotel={hotel} 
+                  onClick={handleEditHotel}
+                />
               ))}
             </div>
           )}
+          </div>
         </main>
 
         {showForm && (

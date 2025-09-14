@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { Button } from './ui/button'
 import { Input } from './ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-import { X, Upload, Image as ImageIcon } from 'lucide-react'
+import { X, Image as ImageIcon } from 'lucide-react'
 import { Hotel, HotelFormData } from '../types/hotel'
 
 interface HotelFormProps {
@@ -212,27 +212,9 @@ export default function HotelForm({ hotel, onSubmit, onCancel, loading }: HotelF
 
             {/* Photo Upload */}
             <div className="space-y-2">
-              <label className="text-sm font-medium">Ajouter une photo</label>
-              <div className="flex items-center space-x-4">
-                {photoPreview ? (
-                  <div className="relative">
-                    <img src={photoPreview} alt="Preview" className="w-24 h-24 object-cover rounded-lg border" />
-                    <Button
-                      type="button"
-                      variant="destructive"
-                      size="sm"
-                      onClick={removePhoto}
-                      className="absolute -top-2 -right-2 h-6 w-6 p-0 rounded-full"
-                    >
-                      <X className="h-3 w-3" />
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="w-24 h-24 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
-                    <ImageIcon className="h-8 w-8 text-gray-400" />
-                  </div>
-                )}
-                <div>
+              <label className="text-sm font-medium">Photo de l'hôtel</label>
+              <div className="space-y-4">
+                <div className="relative">
                   <input
                     type="file"
                     id="photo"
@@ -242,12 +224,51 @@ export default function HotelForm({ hotel, onSubmit, onCancel, loading }: HotelF
                   />
                   <label
                     htmlFor="photo"
-                    className="cursor-pointer inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50"
+                    className="block cursor-pointer group"
                   >
-                    <Upload className="h-4 w-4 mr-2" />
-                    Choisir une photo
+                    {photoPreview ? (
+                      <div className="relative w-full h-48 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-6 text-center hover:border-blue-500 transition-colors">
+                        <img 
+                          src={photoPreview} 
+                          alt="Aperçu de la photo" 
+                          className="max-h-40 max-w-full object-contain rounded"
+                        />
+                        <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                          <div className="bg-white text-blue-600 px-4 py-2 rounded-md text-sm font-medium">
+                            Changer la photo
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="w-full h-48 rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center p-6 text-center hover:border-blue-500 transition-colors">
+                        <div className="flex flex-col items-center">
+                          <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+                            <ImageIcon className="h-6 w-6 text-gray-400" />
+                          </div>
+                          <p className="text-sm text-gray-600 mb-1">Glissez et déposez votre image ici</p>
+                          <p className="text-xs text-gray-400 mb-3">ou</p>
+                          <div className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition-colors">
+                            Choisir une photo
+                          </div>
+                        </div>
+                      </div>
+                    )}
                   </label>
                 </div>
+                {photoPreview && (
+                  <div className="flex justify-end">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={removePhoto}
+                      className="text-red-600 border-red-200 hover:bg-red-50"
+                    >
+                      <X className="h-4 w-4 mr-1" />
+                      Supprimer la photo
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
 
