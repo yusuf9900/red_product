@@ -30,7 +30,8 @@ class Hotel extends Model
      *
      * @var array
      */
-    protected $appends = ['photo_url'];
+    // Temporarily disabled for debugging
+    // protected $appends = ['photo_url'];
 
     /**
      * The attributes that should be cast.
