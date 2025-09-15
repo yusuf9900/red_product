@@ -7,6 +7,8 @@ return [
 
     'allowed_origins' => [
         env('FRONTEND_URL', 'http://localhost:5173'),
+        'https://red-product-frontend.onrender.com',
+        'http://localhost:5173',
     ],
 
     'allowed_origins_patterns' => [],
