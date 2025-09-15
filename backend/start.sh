@@ -15,9 +15,9 @@ php-fpm -D
 # Attendre que PHP-FPM soit prêt
 sleep 2
 
-# Vérifier que PHP-FPM est en cours d'exécution
-if ! ps aux | grep -v grep | grep -q php-fpm; then
-  echo "[start.sh] ERROR: PHP-FPM failed to start" >&2
+# Vérifier que PHP-FPM est en cours d'exécution en testant le socket
+if ! (timeout 5 bash -c 'until nc -z 127.0.0.1 9000; do sleep 0.5; done' 2>/dev/null); then
+  echo "[start.sh] ERROR: PHP-FPM failed to start or is not accepting connections" >&2
   exit 1
 fi
 
