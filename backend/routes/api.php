@@ -38,6 +38,25 @@ Route::get('/health', function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
+// Route de test temporaire pour vérifier la configuration
+Route::get('/test-db', function () {
+    try {
+        $tables = DB::select('SHOW TABLES');
+        return response()->json([
+            'status' => 'ok',
+            'tables' => $tables,
+            'db_connection' => config('database.default')
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'db_connection' => config('database.default'),
+            'db_host' => config('database.connections.'.config('database.default').'.host')
+        ], 500);
+    }
+});
+
 Route::middleware('auth:sanctum')->group(function () {
     // Current authenticated user
     Route::get('/user', function (Request $request) {
