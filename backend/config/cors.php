@@ -6,9 +6,10 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        env('FRONTEND_URL', 'http://localhost:5173', 'https://red-product-bakeli.netlify.app/'),
+        env('FRONTEND_URL', 'http://localhost:5173'),
         'https://red-product-frontend.onrender.com',
-        'http://localhost:5173', 'https://red-product-bakeli.netlify.app/'
+        'http://localhost:5173',
+        'https://red-product-bakeli.netlify.app'
     ],
 
     'allowed_origins_patterns' => [],
