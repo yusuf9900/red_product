@@ -74,12 +74,14 @@ RUN echo 'user www-data;' > /etc/nginx/nginx.conf && \
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Définir les permissions
-RUN chown -R www-data:www-data /var/www/storage \
+RUN addgroup -g 1000 nginx && \
+    adduser -u 1000 -G nginx -h /var/www -D nginx && \
+    chown -R nginx:nginx /var/www/storage \
     && chmod -R 775 /var/www/storage \
     && chmod -R 775 /var/www/bootstrap/cache \
     && mkdir -p /var/run/php/ \
     && touch /var/run/php/php-fpm.sock \
-    && chown -R www-data:www-data /var/run/php/
+    && chown -R nginx:nginx /var/run/php/
 
 # Exposer le port 10000 pour Nginx (port par défaut de Render)
 EXPOSE 10000
