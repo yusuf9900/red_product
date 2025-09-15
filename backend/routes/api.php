@@ -22,6 +22,39 @@ Route::get('/test', function () {
     return response()->json(['status' => 'success', 'message' => 'API is working']);
 });
 
+// Test logging and database connection
+Route::get('/test-logging', function () {
+    try {
+        // Test logging
+        \Illuminate\Support\Facades\Log::info('Test log message from /test-logging endpoint');
+        
+        // Test database connection
+        $connection = \Illuminate\Support\Facades\DB::connection();
+        $pdo = $connection->getPdo();
+        
+        // Test query
+        $hotels = \App\Models\Hotel::select('id', 'name', 'email', 'price_per_night', 'currency')->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'logging' => 'Log message written successfully',
+            'database' => [
+                'connection' => 'Connected to database: ' . $connection->getDatabaseName(),
+                'hotels_count' => $hotels->count(),
+                'hotels_sample' => $hotels->take(1)
+            ]
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => $e->getTraceAsString()
+        ], 500);
+    }
+});
+
 // Test DB Connection
 Route::get('/test-db', function () {
     try {
