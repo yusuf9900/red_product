@@ -4,9 +4,11 @@ services:
     env: docker
     buildCommand: docker build -t red-product-backend .
     startCommand: >
-      docker run -p 10000:10000 \
+      docker run -p 10000:9000 \
       -e APP_ENV=production \
       -e APP_DEBUG=false \
+      -e APP_KEY=base64:$(openssl rand -base64 32) \
+      -e APP_URL=https://red-product-backend.onrender.com \
       -e DB_CONNECTION=mysql \
       -e DB_HOST=red-product-youssuf9900-54bf.k.aivencloud.com \
       -e DB_PORT=21188 \
@@ -15,8 +17,13 @@ services:
       -e DB_PASSWORD=$DB_PASSWORD \
       -e DB_SSL_CA=/etc/ssl/certs/ca-certificates.crt \
       -e MYSQL_ATTR_SSL_VERIFY_SERVER_CERT=true \
-      red-product-backend \
-      php artisan serve --host=0.0.0.0 --port=10000
+      -v /var/www/html/storage \
+      --restart unless-stopped \
+      --name red-product-backend \
+      red-product-backend
     envVars:
       - key: DB_PASSWORD
         sync: false  # À définir manuellement dans le tableau de bord Render
+    healthCheckPath: /api/health
+    autoDeploy: true
+    plan: free

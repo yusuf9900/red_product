@@ -17,24 +17,25 @@ RUN apt-get update && apt-get install -y \
 # Installer Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Créer le répertoire de l'application
-WORKDIR /var/www
+# Créer le répertoire de l'application et définir les permissions
+RUN mkdir -p /var/www/html
+WORKDIR /var/www/html
 
-# Copier les fichiers de dépendances
-COPY composer.json composer.lock ./
+# Copier les fichiers nécessaires pour l'installation des dépendances
+COPY --chown=www-data:www-data . .
 
 # Installer les dépendances PHP (sans les dépendances de développement)
-RUN composer install --no-dev --optimize-autoloader --no-interaction
-
-# Copier le reste des fichiers de l'application
-COPY . .
+RUN composer install --no-dev --optimize-autoloader --no-interaction --no-scripts \
+    && composer dump-autoload --optimize
 
 # Configurer les permissions
-RUN chown -R www-data:www-data /var/www/storage
-RUN chmod -R 775 /var/www/storage
+RUN chown -R www-data:www-data /var/www/html/storage \
+    && chmod -R 775 /var/www/html/storage \
+    && chmod -R 775 /var/www/html/bootstrap/cache
 
-# Générer la clé d'application
-RUN php artisan key:generate
+# Générer la clé d'application si elle n'existe pas
+RUN if [ ! -f ".env" ]; then cp .env.example .env; fi \
+    && php artisan key:generate
 
 # Exposer le port 9000 pour PHP-FPM
 EXPOSE 9000
