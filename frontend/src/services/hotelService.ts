@@ -1,19 +1,20 @@
 import axios from 'axios'
 import { Hotel, HotelFormData, ApiResponse } from '../types/hotel'
 
-const API_BASE_URL = 'https://red-product-backend-brl6.onrender.com/api'
+const API_BASE_URL = (import.meta as any).env?.VITE_API_BASE_URL?.toString() || import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000'
+const API_PREFIX = `${API_BASE_URL.replace(/\/$/, '')}/api`
 
 export const hotelService = {
   // Récupérer tous les hôtels
   getHotels: async (): Promise<Hotel[]> => {
-    const response = await axios.get(`${API_BASE_URL}/hotels`)
+    const response = await axios.get(`${API_PREFIX}/hotels`)
     // Le backend renvoie un tableau brut d'hôtels
     return response.data as Hotel[]
   },
 
   // Récupérer un hôtel par ID
   getHotel: async (id: number): Promise<ApiResponse<Hotel>> => {
-    const response = await axios.get(`${API_BASE_URL}/hotels/${id}`)
+    const response = await axios.get(`${API_PREFIX}/hotels/${id}`)
     return response.data
   },
 
@@ -29,7 +30,7 @@ export const hotelService = {
       }
     })
 
-    const response = await axios.post(`${API_BASE_URL}/hotels`, formData, {
+    const response = await axios.post(`${API_PREFIX}/hotels`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -52,7 +53,7 @@ export const hotelService = {
     // Laravel ne supporte pas PUT avec FormData, on utilise POST avec _method
     formData.append('_method', 'PUT')
 
-    const response = await axios.post(`${API_BASE_URL}/hotels/${id}`, formData, {
+    const response = await axios.post(`${API_PREFIX}/hotels/${id}`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },
@@ -62,7 +63,7 @@ export const hotelService = {
 
   // Supprimer un hôtel
   deleteHotel: async (id: number): Promise<ApiResponse<null>> => {
-    const response = await axios.delete(`${API_BASE_URL}/hotels/${id}`)
+    const response = await axios.delete(`${API_PREFIX}/hotels/${id}`)
     return response.data
   }
 }
