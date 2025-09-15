@@ -30,8 +30,8 @@ class Hotel extends Model
      *
      * @var array
      */
-    // Temporarily disabled for debugging
-    // protected $appends = ['photo_url'];
+    // Include computed URL for the photo in API responses
+    protected $appends = ['photo_url'];
 
     /**
      * The attributes that should be cast.
@@ -55,3 +55,4 @@ class Hotel extends Model
         return $this->photo ? asset('storage/' . $this->photo) : null;
     }
 }
+

@@ -32,7 +32,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel, onClick }) => {
       <div className="relative h-48 bg-gray-100 overflow-hidden">
         {hotel.photo_url ? (
           <img
-            src={hotel.photo_url.startsWith('http') ? hotel.photo_url : `http://localhost:8000/storage/${hotel.photo_url}`}
+            src={hotel.photo_url}
             alt={hotel.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
             onError={(e) => {
@@ -72,3 +72,4 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel, onClick }) => {
 };
 
 export default HotelCard;
+
