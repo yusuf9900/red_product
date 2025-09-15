@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Hotel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class HotelController extends Controller
 {
@@ -13,7 +15,37 @@ class HotelController extends Controller
      */
     public function index()
     {
-        return response()->json(Hotel::latest()->get());
+        try {
+            \Log::info('Début de la méthode index() du contrôleur Hotel');
+            
+            // Tester la connexion à la base de données
+            \DB::connection()->getPdo();
+            \Log::info('Connexion à la base de données réussie');
+            
+            // Tester la récupération des hôtels
+            $hotels = Hotel::latest()->get();
+            \Log::info('Nombre d\'hôtels récupérés : ' . $hotels->count());
+            
+            // Tester la conversion en JSON
+            $jsonResponse = response()->json($hotels);
+            \Log::info('Réponse JSON générée avec succès');
+            
+            return $jsonResponse;
+            
+        } catch (\Exception $e) {
+            \Log::error('Erreur dans HotelController@index: ' . $e->getMessage());
+            \Log::error('Fichier : ' . $e->getFile());
+            \Log::error('Ligne : ' . $e->getLine());
+            \Log::error('Trace : ' . $e->getTraceAsString());
+            
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Une erreur est survenue lors de la récupération des hôtels',
+                'error' => env('APP_DEBUG') ? $e->getMessage() : null,
+                'file' => env('APP_DEBUG') ? $e->getFile() : null,
+                'line' => env('APP_DEBUG') ? $e->getLine() : null,
+            ], 500);
+        }
     }
 
     /**
