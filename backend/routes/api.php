@@ -137,3 +137,42 @@ Route::middleware('auth:sanctum')->group(function () {
     // Hotel CRUD routes
     Route::apiResource('hotels', HotelController::class);
 });
+
+// Route de débogage pour tester la connexion à la base de données
+Route::get('/debug-db', function () {
+    try {
+        // Afficher les informations de connexion (sans les mots de passe)
+        $dbConfig = [
+            'DB_CONNECTION' => env('DB_CONNECTION'),
+            'DB_HOST' => env('DB_HOST'),
+            'DB_PORT' => env('DB_PORT'),
+            'DB_DATABASE' => env('DB_DATABASE'),
+            'DB_USERNAME' => env('DB_USERNAME'),
+            'DB_SSL_CA' => env('DB_SSL_CA') ? 'set' : 'not set',
+            'MYSQL_ATTR_SSL_VERIFY_SERVER_CERT' => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', 'not set'),
+        ];
+        
+        // Tester la connexion à la base de données
+        $pdo = DB::connection()->getPdo();
+        $dbVersion = $pdo->getAttribute(PDO::ATTR_SERVER_VERSION);
+        
+        // Tester la récupération des hôtels
+        $hotels = DB::table('hotels')->get();
+        
+        return response()->json([
+            'status' => 'success',
+            'db_config' => $dbConfig,
+            'db_version' => $dbVersion,
+            'hotels_count' => $hotels->count(),
+            'hotels' => $hotels,
+        ]);
+    } catch (\Exception $e) {
+        return response()->json([
+            'status' => 'error',
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => explode("\n", $e->getTraceAsString()),
+        ], 500);
+    }
+});
