@@ -12,6 +12,10 @@ chmod -R 775 /var/www/storage /var/www/bootstrap/cache || true
 echo "[start.sh] Running database migrations..."
 php artisan migrate --force
 
+# Créer le lien symbolique du stockage public (si non existant)
+echo "[start.sh] Ensuring storage symlink..."
+php artisan storage:link || true
+
 # Démarrer PHP-FPM en arrière-plan
 echo "[start.sh] Starting PHP-FPM on 0.0.0.0:9000..."
 php-fpm -D
