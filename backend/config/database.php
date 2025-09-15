@@ -59,15 +59,21 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                // Only set CA path if provided via env; this avoids SSL errors when no CA is needed
-                PDO::MYSQL_ATTR_SSL_CA => env('DB_SSL_CA'),
-                // Default to not verifying server cert unless explicitly enabled
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', false),
-                PDO::ATTR_EMULATE_PREPARES => true,
-                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql') ? (function () {
+                $ca = env('DB_SSL_CA');
+                // Parse boolean from env (e.g. "false", "0", "off" -> false)
+                $verify = filter_var(env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', false), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                if ($verify === null) { $verify = false; }
+                return array_filter([
+                    // Only set CA path if provided via env; this avoids SSL errors when no CA is needed
+                    PDO::MYSQL_ATTR_SSL_CA => $ca,
+                    // Control server cert verification explicitly
+                    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => $verify,
+                    PDO::ATTR_EMULATE_PREPARES => true,
+                    PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                ], function ($value) { return !is_null($value); });
+            })() : [],
         ],
 
         'mariadb' => [
@@ -85,10 +91,15 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('DB_SSL_CA'),
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', false),
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql') ? (function () {
+                $ca = env('DB_SSL_CA');
+                $verify = filter_var(env('MYSQL_ATTR_SSL_VERIFY_SERVER_CERT', false), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+                if ($verify === null) { $verify = false; }
+                return array_filter([
+                    PDO::MYSQL_ATTR_SSL_CA => $ca,
+                    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => $verify,
+                ], function ($value) { return !is_null($value); });
+            })() : [],
         ],
 
         'pgsql' => [
