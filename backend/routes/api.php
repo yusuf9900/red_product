@@ -17,6 +17,11 @@ use App\Http\Controllers\HotelController;
 |
 */
 
+// Simple test route
+Route::get('/test', function () {
+    return response()->json(['status' => 'success', 'message' => 'API is working']);
+});
+
 // Test DB Connection
 Route::get('/test-db', function () {
     try {

@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         // Enable CORS for API
+        $middleware->append(\App\Http\Middleware\CorsMiddleware::class);
         $middleware->append(HandleCors::class);
 
         // API middleware group (bindings etc.)
