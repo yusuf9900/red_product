@@ -1,37 +1,26 @@
 #!/bin/bash
 set -e
 
-# Créer le répertoire de run pour PHP-FPM
-mkdir -p /var/run/php
+# Préparer répertoires runtime
+mkdir -p /var/run/php /var/log/nginx
 
-# Créer l'utilisateur et le groupe nginx s'ils n'existent pas
-if ! id -u nginx >/dev/null 2>&1; then
-    addgroup -g 1000 nginx
-    adduser -u 1000 -G nginx -h /var/www -D nginx
-fi
-
-# Configurer les permissions
-chown -R nginx:nginx /var/www/storage /var/www/bootstrap/cache /var/run/php
-chmod -R 775 /var/www/storage /var/www/bootstrap/cache
-
-# Créer le fichier de socket PHP-FPM
-touch /var/run/php/php-fpm.sock
-chown nginx:nginx /var/run/php/php-fpm.sock
-chmod 660 /var/run/php/php-fpm.sock
+# Permissions pour www-data (utilisateur par défaut sur Debian pour PHP/Nginx)
+chown -R www-data:www-data /var/www/storage /var/www/bootstrap/cache /var/run/php /var/log/nginx || true
+chmod -R 775 /var/www/storage /var/www/bootstrap/cache || true
 
 # Démarrer PHP-FPM en arrière-plan
-echo "Starting PHP-FPM..."
-php-fpm -D -R
+echo "[start.sh] Starting PHP-FPM on 0.0.0.0:9000..."
+php-fpm -D
 
 # Attendre que PHP-FPM soit prêt
 sleep 2
 
 # Vérifier que PHP-FPM est en cours d'exécution
-if ! pgrep -f "php-fpm" > /dev/null; then
-    echo "Error: PHP-FPM failed to start"
-    exit 1
+if ! pgrep -x "php-fpm" >/dev/null; then
+  echo "[start.sh] ERROR: PHP-FPM failed to start" >&2
+  exit 1
 fi
 
-# Démarrer Nginx en premier plan
-echo "Starting Nginx..."
+# Démarrer Nginx au premier plan
+echo "[start.sh] Starting Nginx on :10000..."
 nginx -g 'daemon off;'
