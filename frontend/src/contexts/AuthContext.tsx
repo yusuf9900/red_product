@@ -18,7 +18,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 // Configuration d'Axios
-axios.defaults.baseURL = 'http://localhost:8000'
+axios.defaults.baseURL = 'https://red-product-backend-brl6.onrender.com'
 axios.defaults.withCredentials = true
 
 export function AuthProvider({ children }: { children: ReactNode }) {

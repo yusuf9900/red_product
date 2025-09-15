@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { Hotel, HotelFormData, ApiResponse } from '../types/hotel'
 
-const API_BASE_URL = 'http://localhost:8000/api'
+const API_BASE_URL = 'https://red-product-backend-brl6.onrender.com/api'
 
 export const hotelService = {
   // Récupérer tous les hôtels
