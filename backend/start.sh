@@ -16,7 +16,7 @@ php-fpm -D
 sleep 2
 
 # Vérifier que PHP-FPM est en cours d'exécution
-if ! pgrep -x "php-fpm" >/dev/null; then
+if ! ps aux | grep -v grep | grep -q php-fpm; then
   echo "[start.sh] ERROR: PHP-FPM failed to start" >&2
   exit 1
 fi
