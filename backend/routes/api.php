@@ -20,17 +20,49 @@ use App\Http\Controllers\HotelController;
 // Test DB Connection
 Route::get('/test-db', function () {
     try {
-        DB::connection()->getPdo();
+        $connection = DB::connection();
+        $pdo = $connection->getPdo();
+        
+        // Récupérer des informations détaillées sur la connexion
+        $connectionInfo = [
+            'driver' => $connection->getDriverName(),
+            'database' => $connection->getDatabaseName(),
+            'host' => $connection->getConfig('host'),
+            'port' => $connection->getConfig('port'),
+            'username' => $connection->getConfig('username'),
+            'charset' => $connection->getConfig('charset'),
+            'collation' => $connection->getConfig('collation'),
+            'prefix' => $connection->getConfig('prefix'),
+            'strict' => $connection->getConfig('strict'),
+            'engine' => $connection->getConfig('engine'),
+            'sslmode' => $connection->getConfig('sslmode') ?? 'not set',
+            'options' => $connection->getConfig('options') ?? [],
+            'connection_status' => $pdo->getAttribute(PDO::ATTR_CONNECTION_STATUS),
+            'server_version' => $pdo->getAttribute(PDO::ATTR_SERVER_VERSION),
+            'client_version' => $pdo->getAttribute(PDO::ATTR_CLIENT_VERSION),
+        ];
+
         return response()->json([
             'status' => 'success',
             'message' => 'Successfully connected to the database!',
-            'database' => DB::connection()->getDatabaseName()
+            'connection' => $connectionInfo
         ]);
     } catch (\Exception $e) {
+        \Illuminate\Support\Facades\Log::error('Database connection error: ' . $e->getMessage(), [
+            'exception' => $e,
+            'config' => [
+                'default' => config('database.default'),
+                'connections' => array_keys(config('database.connections'))
+            ]
+        ]);
+
         return response()->json([
             'status' => 'error',
             'message' => 'Could not connect to the database.',
-            'error' => $e->getMessage()
+            'error' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+            'trace' => env('APP_DEBUG') ? $e->getTraceAsString() : null
         ], 500);
     }
 });
