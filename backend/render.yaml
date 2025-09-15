@@ -2,42 +2,33 @@ services:
   - type: web
     name: red-product-backend
     env: docker
-    buildCommand: docker build -t red-product-backend .
-    startCommand: >
-      docker run -d \
-      -p 10000:8080 \
-      -e APP_ENV=production \
-      -e APP_DEBUG=false \
-      -e APP_KEY=base64:$(openssl rand -base64 32) \
-      -e APP_URL=https://red-product-backend.onrender.com \
-      -e DB_CONNECTION=mysql \
-      -e DB_HOST=red-product-youssuf9900-54bf.k.aivencloud.com \
-      -e DB_PORT=21188 \
-      -e DB_DATABASE=defaultdb \
-      -e DB_USERNAME=avnadmin \
-      -e DB_PASSWORD=$DB_PASSWORD \
-      -e DB_SSL_CA=/etc/ssl/certs/ca-certificates.crt \
-      -e MYSQL_ATTR_SSL_VERIFY_SERVER_CERT=true \
-      -v /var/www/storage \
-      --restart unless-stopped \
-      --name red-product-backend \
-      red-product-backend
+    dockerContext: .
+    dockerfilePath: Dockerfile
     envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        value: https://red-product-backend.onrender.com
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: red-product-youssuf9900-54bf.k.aivencloud.com
+      - key: DB_PORT
+        value: "21188"
+      - key: DB_DATABASE
+        value: defaultdb
+      - key: DB_USERNAME
+        value: avnadmin
       - key: DB_PASSWORD
         sync: false  # À définir manuellement dans le tableau de bord Render
+      - key: DB_SSL_CA
+        value: /etc/ssl/certs/ca-certificates.crt
+      - key: MYSQL_ATTR_SSL_VERIFY_SERVER_CERT
+        value: "true"
     healthCheckPath: /api/health
     autoDeploy: true
     plan: free
-    envSpecificDetails:
-      dockerCommand: "/usr/local/bin/start.sh"
-      dockerContext: "."
-      dockerfilePath: "Dockerfile"
-      dockerArgs: []
-      dockerTarget: ""
-      dockerCachePolicy: ""
-      dockerCacheFrom: []
-      dockerCacheTo: []
-      dockerNoCache: false
-      dockerPull: false
-      dockerShmSize: ""
-      dockerTargetPort: 8080
