@@ -1,23 +1,66 @@
+# Dependencies
 /node_modules
+/vendor
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Laravel specific
+bootstrap/cache/*
+storage/*
+!storage/framework/
+!storage/logs/
+!storage/app/public/
+!storage/framework/cache/
+!storage/framework/sessions/
+!storage/framework/views/
+
+# Build assets
 /public/hot
 /public/storage
-/storage/*.key
-/vendor
-.env
-.env.backup
+/public/build
+
+# Testing
+/coverage
 .phpunit.result.cache
-Homestead.json
-Homestead.yaml
-npm-debug.log
-yarn-error.log
+
+# IDE specific
 /.fleet
 /.idea
 /.vscode
+*.sublime-*
+
+# Version control
+/.git
 /.github
-.git
 .gitignore
-.dockerignore
+
+# Docker
 Dockerfile
+.dockerignore
+
+# Documentation
 README.md
 CHANGELOG.md
 LICENSE
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Local development
+Homestead.json
+Homestead.yaml
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

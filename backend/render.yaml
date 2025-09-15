@@ -4,7 +4,8 @@ services:
     env: docker
     buildCommand: docker build -t red-product-backend .
     startCommand: >
-      docker run -p 10000:9000 \
+      docker run -d \
+      -p 10000:8080 \
       -e APP_ENV=production \
       -e APP_DEBUG=false \
       -e APP_KEY=base64:$(openssl rand -base64 32) \
@@ -17,7 +18,7 @@ services:
       -e DB_PASSWORD=$DB_PASSWORD \
       -e DB_SSL_CA=/etc/ssl/certs/ca-certificates.crt \
       -e MYSQL_ATTR_SSL_VERIFY_SERVER_CERT=true \
-      -v /var/www/html/storage \
+      -v /var/www/storage \
       --restart unless-stopped \
       --name red-product-backend \
       red-product-backend
@@ -27,3 +28,16 @@ services:
     healthCheckPath: /api/health
     autoDeploy: true
     plan: free
+    envSpecificDetails:
+      dockerCommand: "/usr/local/bin/start.sh"
+      dockerContext: "."
+      dockerfilePath: "Dockerfile"
+      dockerArgs: []
+      dockerTarget: ""
+      dockerCachePolicy: ""
+      dockerCacheFrom: []
+      dockerCacheTo: []
+      dockerNoCache: false
+      dockerPull: false
+      dockerShmSize: ""
+      dockerTargetPort: 8080
